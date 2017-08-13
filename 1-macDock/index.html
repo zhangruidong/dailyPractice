@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>macDock</title>
+    <style>
+        * {
+            margin:0;
+            padding:0;
+        }
+        body {
+            margin:0;
+            padding:0;
+        }
+        #dock {
+            box-sizing: border-box;
+            width:100%;
+            border:1px solid black;
+            position: absolute;
+            bottom:40px;
+            left: 0;
+            text-align: center;
+        }
+        #dock div {
+            box-sizing: border-box;
+            width:58px;
+            height: 58px;
+            font: 20px/58px '微软雅黑';
+            border:1px solid green;
+            display: inline-block;
+            margin-right: 16px;
+            border-radius: 10%;
+            user-select:none;
+            cursor: pointer;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+<body>
+    <div id="dock">
+        <div>1</div><div>2</div><div>3</div><div>4</div>
+    </div>
+    <script>
+        const dock=document.getElementById('dock');
+        const divs=Array.from(dock.querySelectorAll('div'));
+        const w=divs[0].clientWidth;
+        document.onmousemove=function (e) {
+            divs.forEach(function (div) {
+                scaleDivs(e,div)
+            })
+        }
+        function scaleDivs(e,div) {
+            let divCenter={
+                x:div.getBoundingClientRect().left+div.offsetWidth/2,
+                y:div.getBoundingClientRect().top+div.offsetHeight/2,
+            }
+            let a=e.clientX-divCenter.x;
+            let b=e.clientY-divCenter.y;
+            let dis=Math.floor(Math.sqrt(a*a+b*b))
+            /*
+            * scale 应该如何取值？
+            * 在4w的范围内开始放大
+            * scale取值在 1~2之间
+            * */
+            let scale=(4*w-dis)/(4*w)+1;
+            if(scale>2){scale=2}
+            if(scale<1){scale=1}
+            console.log(scale)
+            div.style.width=w*scale+'px';
+            div.style.height=w*scale+'px';
+        }
+    </script>
+</body>
+</html>
