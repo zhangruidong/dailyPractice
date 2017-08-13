@@ -50,13 +50,13 @@
             })
         }
         function scaleDivs(e,div) {
-            let divCenter={
+            const divCenter={ //中心点的坐标
                 x:div.getBoundingClientRect().left+div.offsetWidth/2,
                 y:div.getBoundingClientRect().top+div.offsetHeight/2,
             }
-            let a=e.clientX-divCenter.x;
-            let b=e.clientY-divCenter.y;
-            let dis=Math.floor(Math.sqrt(a*a+b*b))
+            const a=e.clientX-divCenter.x;  //直角边的长度
+            const b=e.clientY-divCenter.y;  //直角边的长度
+            const dis=Math.floor(Math.sqrt(a*a+b*b))
             /*
             * scale 应该如何取值？
             * 在4w的范围内开始放大
@@ -65,7 +65,6 @@
             let scale=(4*w-dis)/(4*w)+1;
             if(scale>2){scale=2}
             if(scale<1){scale=1}
-            console.log(scale)
             div.style.width=w*scale+'px';
             div.style.height=w*scale+'px';
         }
