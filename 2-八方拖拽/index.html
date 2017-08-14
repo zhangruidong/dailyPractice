@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>八方拖拽</title>
+    <style>
+        body {
+            margin:0;
+            padding: 0;
+        }
+        #box {
+            width:200px;
+            height: 200px;
+            min-width: 80px;
+            min-height: 80px;
+            border:8px solid red;
+            position: absolute;
+            left:200px;
+            top:200px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+        var box=document.getElementById('box');
+        box.onmousedown = function(ev){
+            box.isMouseDown = true;
+            box.disX = ev.clientX - box.offsetLeft;
+            box.disY = ev.clientY - box.offsetTop;
+            box.w=box.clientWidth;
+            box.h=box.clientHeight;
+            box.left=box.offsetLeft;
+            box.top=box.offsetTop;
+
+            box.cur=box.style.cursor;
+        }
+        document.onmousemove = function(ev){
+            box.l=ev.clientX - box.disX;
+            box.t=ev.clientY - box.disY;
+            box.rect=box.getBoundingClientRect();
+
+            if(ev.clientX-10>box.rect.left && ev.clientX+10<box.rect.right && ev.clientY-10>box.rect.top && ev.clientY+10<box.rect.bottom  ){
+                box.style.cursor='move';
+                if(box.isMouseDown){
+                    /*box.style.left=box.l+'px';
+                    box.style.top=box.t+'px';*/
+                }
+            }else{
+                if(ev.clientY>box.rect.top && ev.clientY-10<box.rect.top){//上方
+                    box.style.cursor='n-resize';
+                }else if(ev.clientY<box.rect.bottom && ev.clientY+10>box.rect.bottom){//下方
+                    box.style.cursor='s-resize';
+                }else if(ev.clientX>box.rect.left && ev.clientX-10<box.rect.left){//左边
+                    box.style.cursor='e-resize';
+                }else if(ev.clientX<box.rect.right && ev.clientX+10>box.rect.right){ //右边
+                    box.style.cursor='w-resize';
+                }
+                if(ev.clientY>box.rect.top && ev.clientY-10<box.rect.top && ev.clientX<box.rect.right && ev.clientX+10>box.rect.right) {//上右
+                    box.style.cursor='ne-resize';
+                }
+                if(ev.clientY>box.rect.top && ev.clientY-10<box.rect.top && ev.clientX>box.rect.left && ev.clientX-10<box.rect.left) {//上左
+                    box.style.cursor='nw-resize';
+                }
+                if(ev.clientY<box.rect.bottom && ev.clientY+10>box.rect.bottom && ev.clientX>box.rect.left && ev.clientX-10<box.rect.left) {//下左
+                    box.style.cursor='sw-resize';
+                }
+                if(ev.clientY<box.rect.bottom && ev.clientY+10>box.rect.bottom && ev.clientX<box.rect.right && ev.clientX+10>box.rect.right) {//下右
+                    box.style.cursor='se-resize';
+                }
+//                box.style.cursor='default';
+            }
+            console.log(box.cur)
+            if(box.isMouseDown && box.cur=='move'){
+                box.style.left=box.l+'px';
+                box.style.top=box.t+'px';
+            }
+            if(box.isMouseDown && box.cur=='w-resize'){
+                console.log('向右扩展') ;
+                box.style.width=box.w+ev.clientX-box.disX-box.offsetLeft+'px'
+            }
+            if(box.isMouseDown && box.cur=='s-resize'){
+                console.log('向下扩展') ;
+                box.style.height=box.h+ev.clientY-box.disY-box.offsetTop+'px'
+            }
+            if(box.isMouseDown && box.cur=='e-resize'){
+                console.log('向左扩展') ;
+                box.style.width=box.w-ev.clientX+box.disX+box.left+'px';
+                box.style.left=ev.clientX-box.disX+'px';
+            }
+            if(box.isMouseDown && box.cur=='n-resize'){
+                console.log('向上扩展') ;
+                box.style.height=box.h-ev.clientY+box.disY+box.top+'px';
+                box.style.top=ev.clientY-box.disY+'px';
+            }
+            if(box.isMouseDown && box.cur=='ne-resize'){
+                console.log('右上扩展') ;
+                box.style.width=box.w+ev.clientX-box.disX-box.offsetLeft+'px'
+                box.style.height=box.h-ev.clientY+box.disY+box.offsetTop+'px'
+                box.style.top=box.top+ev.clientY-box.disY-box.offsetTop+'px'
+            }
+            if(box.isMouseDown && box.cur=='se-resize'){
+                console.log('右下扩展') ;
+                box.style.width=box.w+ev.clientX-box.disX-box.offsetLeft+'px';
+                box.style.height=box.h+ev.clientY-box.disY-box.offsetTop+'px'
+            }
+            if(box.isMouseDown && box.cur=='nw-resize'){
+                console.log('左上扩展') ;
+                box.style.width=box.w-ev.clientX+box.disX+box.offsetLeft+'px';
+                box.style.left=box.left+ev.clientX-box.disX-box.offsetLeft+'px';
+                box.style.height=box.h-ev.clientY+box.disY+box.offsetTop+'px'
+                box.style.top=box.top+ev.clientY-box.disY-box.offsetTop+'px'
+            }
+            if(box.isMouseDown && box.cur=='sw-resize'){
+                console.log('左下扩展') ;
+                box.style.width=box.w-ev.clientX+box.disX+box.offsetLeft+'px';
+                box.style.left=box.left+ev.clientX-box.disX-box.offsetLeft+'px';
+                box.style.height=box.h+ev.clientY-box.disY-box.offsetTop+'px'
+            }
+
+        }
+        document.onmouseup = function(){
+            box.isMouseDown = false;
+            box.cur='';
+        }
+    </script>
+</body>
+</html>
