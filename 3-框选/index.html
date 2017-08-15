@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        .rect {
+            border: 1px dotted #000;
+            background-color: rgba(0,0,255,.3);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        #box {
+            width:318px;
+            height: 318px;
+            border: 1px solid #000;
+            position: relative;
+            margin:100px auto;
+        }
+        #box div {
+            width:100px;
+            height: 100px;
+            background-color: orangered;
+            float: left;
+            margin: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+<script>
+    var box=document.getElementById('box');
+    var divs=box.getElementsByTagName('div');
+
+    // 浮动布局转固定定位-----------------------------------
+    //注意两个for要分开  等位置信息保存好之后再更改布局
+    for (var i = 0; i < divs.length; i++) {
+        divs[i].style.left = divs[i].offsetLeft + "px";
+        divs[i].style.top = divs[i].offsetTop + "px";
+    }
+
+    for (var i = 0; i < divs.length; i++) {
+        divs[i].style.position = "absolute";
+        divs[i].style.float = "none";
+    }
+    //----------------------------------------------------------
+    document.onmousedown=function (ev) {
+        var rect=document.createElement('div');
+        rect.className='rect';
+        document.body.appendChild(rect);
+
+        var oriX=ev.clientX;
+        var oriY=ev.clientY;
+        rect.style.left=oriX+'px';
+        rect.style.top=oriY+'px';
+        document.onmousemove=function (ev) {
+            rect.style.width=Math.abs(ev.clientX-oriX)+'px';
+            rect.style.height=Math.abs(ev.clientY-oriY)+'px';
+            rect.style.left=Math.min(ev.clientX,oriX)+'px';
+            rect.style.top=Math.min(ev.clientY,oriY)+'px';
+
+            for(var i=0;i<divs.length;i++){
+                if(crash(rect,divs[i])){
+                    divs[i].style.backgroundColor='green';
+                }else{
+                    divs[i].style.backgroundColor='orangered';
+                }
+            }
+
+        }
+        document.onmouseup=function () {
+            document.onmousemove=null;
+            document.body.removeChild(rect);
+        }
+        return false
+    }
+    function crash(obj1,obj2) { //碰撞检测
+        var obj1Rect=obj1.getBoundingClientRect();
+        var obj2Rect=obj2.getBoundingClientRect();
+        if(obj1Rect.bottom<obj2Rect.top ||
+            obj1Rect.top>obj2Rect.bottom ||
+            obj1Rect.left>obj2Rect.right ||
+            obj1Rect.right<obj2Rect.left
+        ){
+            return false;
+        }else{
+            return true;
+        }
+    }
+</script>
+</body>
+</html>
