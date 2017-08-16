@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        #box {
+            width:100px ;
+            height:100px;
+            background-color: #000;
+            position: absolute;
+            left:0;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <script>
+        //37 left
+        //38 up
+        //39 right
+        //40 down
+        var box=document.getElementById('box');
+        var dis=2;  //每次移动的距离
+        var int=10; //触发的间隔时间
+        var timer=null;
+        var keyMap=[];
+        var isMoving=false;
+        function move() {
+            timer=setInterval(function () {
+                if(keyMap[37]){
+                    box.style.left=box.offsetLeft-dis+'px';
+                }
+                if(keyMap[38]){
+                    box.style.top=box.offsetTop-dis+'px';
+                }
+                if(keyMap[39]){
+                    box.style.left=box.offsetLeft+dis+'px';
+                }
+                if(keyMap[40]){
+                    box.style.top=box.offsetTop+dis+'px';
+                }
+            },int);
+        }
+
+        document.onkeydown=function (e) {
+            if(!isMoving){
+                move();
+                isMoving=true;
+            }
+            keyMap[e.keyCode]=true;
+        }
+        document.onkeyup=function (e) {
+            keyMap[e.keyCode]=false;
+            for(var i=37;i<41;i++){
+                if(keyMap[i])return;
+            }
+            clearInterval(timer);
+            isMoving=false;
+        }
+
+    </script>
+</body>
+</html>
