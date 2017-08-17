@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>书籍搜索</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/vue.js"></script>
+</head>
+<body>
+    <div id="box" >
+        <input type="text" id="text" placeholder="请选择您想搜索的书籍" :value="value" @keydown.up.capture="upUp">
+        <ul id="list">
+            <li v-for="(item,index) in items"
+                :class="[isSelect(index),item.hover]"
+                @click="selected(index,$event)"
+                @mouseover="item.hover='hover'"
+                @mouseout="item.hover=''"
+
+            >
+                <a href="javascript:;">
+                    <img :src="item.src" alt="react">
+                    <span>{{item.text}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <script>
+        var vm= new Vue({
+            el:'#box',
+            data: {
+                items :[
+                    {
+                        src:"img/react.jpg",
+                        text:'react',
+                        hover:''
+                    },
+                    {
+                        src:"img/AngularJs.png",
+                        text:'angular.js',
+                        hover:''
+                    },
+                    {
+                        src:"img/d3.jpg",
+                        text:'d3',
+                        hover:''
+                    },
+                    {
+                        src:"img/vue.jpg",
+                        text:'vue',
+                        hover:''
+                    },
+                    {
+                        src:"img/JavaScript.png",
+                        text:'javascript风格指南',
+                        hover:''
+                    }
+                ],
+                sel:[]
+            },
+            computed:{
+                value:function () {
+                    const text=[];
+                    this.sel.forEach((index)=>{
+                        text.push('《'+this.items[index].text+'》')
+                    })
+                    return text.join('');
+                }
+
+            },
+            methods: {
+                selected(index,e) {
+                    if(e.ctrlKey){
+                        if(this.sel.indexOf(index)==-1){
+                            this.sel.push(index);
+                        }else{
+                            this.sel.splice(this.sel.indexOf(index),1);
+                        }
+                    }else{
+                        if(this.sel.indexOf(index)==-1){
+                            this.sel.splice(0,this.sel.length,index)
+                        }else{
+                            this.sel.splice(0,this.sel.length);
+                        }
+                    }
+                    this.sel.sort();
+                },
+                selectedCtrl(index,e){
+                    if(this.sel.indexOf(index)==-1){
+                        this.sel.push(index);
+                    }else{
+                        this.sel.splice(this.sel.indexOf(index),1);
+                    }
+
+                    const text=[];
+                    this.sel.sort().forEach((index)=>{
+                        text.push('《'+this.items[index].text+'》')
+                    })
+                    this.inputValue=text.join('')
+                },
+                isSelect(i){
+                    return this.sel.includes( i ) ? "selected" : ""
+                },
+                upUp(){
+                    console.log('up')
+                }
+
+            }
+        })
+    </script>
+</body>
+</html>
