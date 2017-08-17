@@ -20,6 +20,8 @@
 #list {
     margin-top: 10px;
     width:100%;
+    opacity: 0;
+    transition: 1s;
 }
 #list li {
     padding-left: 16px;
@@ -29,13 +31,13 @@
     border-radius: 8px;
     cursor: pointer;
 }
-#list li:hover {
-    background-color: #228296;
-}
-#list li.hover {
+/*#list li:hover {
     background-color: #228296;
 }
 #list li.selected:hover {
+    background-color: #228296;
+}*/
+#list li.hover {
     background-color: #228296;
 }
 #list li.selected {
