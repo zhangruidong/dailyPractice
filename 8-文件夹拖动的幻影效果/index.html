@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        .box {
+            width:100px;
+            height:100px;
+            background-color:red;
+            position: absolute;
+            left: 100px;
+            top: 80px;
+            font:20px/100px "微软雅黑";
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <span>新建文件夹</span>
+    </div>
+    <script>
+        var box=document.querySelector(".box");
+
+        box.onmousedown=function (e) {
+            var clone=box.cloneNode(true);
+            clone.firstElementChild.innerHTML="拖我";
+            clone.style.opacity=0.6;
+            document.body.appendChild(clone);
+            var disX=e.clientX-clone.offsetLeft;
+            var disY=e.clientY-clone.offsetTop;
+
+            document.onmousemove=function (e) {
+                clone.style.left=e.clientX-disX+'px';
+                clone.style.top=e.clientY-disY+'px';
+
+            }
+            document.onmouseup=function () {
+                box.style.left=Math.round(clone.offsetLeft/100)*100+'px';
+                box.style.top=Math.round(clone.offsetTop/100)*100+'px';
+                document.body.removeChild(clone);
+                document.onmousemove=document.onmouseup=null;
+            }
+            return false;
+        }
+        /*
+        * 注意
+        *   cloneNode() 方法可创建指定的节点的精确拷贝。
+            cloneNode() 方法 拷贝所有属性和值。
+            该方法将复制并返回调用它的节点的副本。如果传递给它的参数是 true，它还将递归复制当前节点的所有子孙节点。否则，它只复制当前节点。
+
+            当document.onmouseup执行完之后，不仅让document.onmousemove=null
+            **如果document.onmouseup里有内容，应该也清空 document.onmouseup=null
+            *
+            * ***********************
+            * box.style.left=Math.round(clone.offsetLeft/100)*100+'px';
+                box.style.top=Math.round(clone.offsetTop/100)*100+'px';
+                这里的四舍五入精妙的实现了吸附效果。
+        * */
+    </script>
+</body>
+</html>
