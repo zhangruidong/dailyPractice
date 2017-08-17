@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        #box {
+            width:200px;
+            height: 200px;
+            background-color: blueviolet;
+            position: absolute;
+            left: 0;
+            top:200px;
+        }
+    </style>
+</head>
+<body>
+    <input type="button" value="playback" id="playback">
+    <div id="box"></div>
+    <script>
+        var playback=document.getElementById("playback");
+        var box=document.getElementById("box");
+        var arr=[];
+        var timer=null;
+
+        playback.onclick=function () {
+            var num=0;
+            timer=setInterval(function () {
+                box.style.left=arr[num][0]+"px";
+                box.style.top=arr[num][1]+"px";
+                num++;
+                if(num==arr.length){
+                    clearInterval(timer);
+                }
+            },10)
+        }
+        box.onmousedown=function (e) {
+            var x=box.offsetLeft;
+            var y=box.offsetTop;
+            var disX=e.clientX-x;
+            var disY=e.clientY-y;
+            arr=[[x,y]];   /* 按下的时候就应该开始往数组里面存数据了  */
+
+            document.onmousemove=function (e) {
+                x=e.clientX-disX;
+                y=e.clientY-disY
+                if(y<60){y=60};
+                arr.unshift([x,y])   /* 这里用UNshift方法，避免之后对数组倒叙   */
+                box.style.left=x+"px";
+                box.style.top=y+"px";
+            }
+            document.onmouseup=function () {
+                document.onmousemove=null;
+            }
+            return false;
+        }
+        /*
+        注意：
+        - 清除定时器的时候，清除的是下一次定时器的执行，但是本次定时器还是会执行完的
+        * */
+        /*
+        * 还可以修改的点
+        * - 回放的时候不可以拖拽
+        * - 回放的时候不可以再点击回放
+        * - 多次的down 与 up  怎么处理？
+        * */
+    </script>
+</body>
+</html>
