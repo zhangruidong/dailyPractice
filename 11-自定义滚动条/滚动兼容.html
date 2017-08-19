@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        #box {
+            width:100px;
+            height:100px;
+            font:40px/100px "新宋体";
+            text-align: center;
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">0</div>
+    <script>
+        var box=document.getElementById("box");
+        num=0;
+        addScroll(box);
+        function addScroll(obj) {
+            obj.onmousewheel=com;
+            obj.addEventListener("DOMMouseScroll",com);
+            function com(e) {
+                if( e.wheelDelta){//chrome
+                    if(e.wheelDelta>0){//down
+                        down()
+                    }else{//up
+                        up()
+                    }
+                }
+                if(e.detail){//firefox
+                    if(e.detail>0 ){//up
+                        up();
+                    }else{//down
+                        down()
+                    }
+                }
+            }
+        }
+        /*box.onmousewheel=function (e) {
+            if(e.wheelDelta>0){//down
+                down()
+            }else{//up
+                up()
+            }
+        }
+        box.addEventListener("DOMMouseScroll",function (e) {
+            if(e.detail>0){//up
+                up();
+            }else{//down
+                down()
+            }
+        })*/
+
+        function down() {//--
+            num--;
+            box.innerHTML=num;
+        }
+        function up() {//++
+            num++;
+            box.innerHTML=num;
+        }
+
+    </script>
+</body>
+</html>
