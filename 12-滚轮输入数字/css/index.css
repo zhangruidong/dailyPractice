@@ -1,0 +1,66 @@
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    background: url("../img/bg.png") no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+#card {
+    width:350px;
+    height:444px;
+    margin: 100px auto;
+    background:#41c0cc  url("../img/logo.png") 80px 42px no-repeat;
+    border-radius: 6px;
+}
+#card input {
+    margin-top: 180px;
+    margin-left: 105px;
+    width:140px;
+    height: 40px;
+    font-size: 22px;
+    color: #fff;
+    border:none;
+    text-align: center;
+    border-bottom: 2px solid black;
+    background-color: #41c0cc;
+}
+#card input::-webkit-input-placeholder{
+    color: #fff;
+}
+#box{
+    width:261px;
+    height: 66px;
+    border:1px solid #a0e0e6;
+    border-radius: 6px;
+    margin-left: 43px;
+    margin-top: 16px;
+}
+#list {
+    width:253px;
+    height:58px;
+    margin-top: 5px;
+    margin-left: 4px;
+    overflow: hidden;
+}
+#list li {
+    width:38px;
+    height: 116px;
+    float: left;
+    margin-right: 5px;
+}
+#list li:last-of-type {
+    margin-right: 0;
+}
+#list img {
+    width:38px;
+    height: 58px;
+    float: left;
+}
+p {
+    font:12px/30px "微软雅黑";
+    text-align: center;
+    color: #c8edee;
+    margin-top: 10px;
+}
