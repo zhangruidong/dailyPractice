@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        div {
+            width:200px;
+            height: 100px;
+            margin-top: 10px;
+            background-color: #900;
+            color: white;
+            font:40px/100px "微软雅黑";
+            text-align: center;
+            display: none;
+        }
+        button.active {
+            background-color: green;
+        }
+        div.active {
+            display: block;
+        }
+        content{
+            display: block;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<content class="box1">
+    <button type="button">1</button>
+    <button type="button" class="active">2</button>
+    <button type="button">3</button>
+    <div>1</div>
+    <div class="active">2</div>
+    <div>3</div>
+</content>
+<content class="box2">
+    <button type="button">1</button>
+    <button type="button" class="active">2</button>
+    <button type="button">3</button>
+    <button type="button">4</button>
+    <div>1</div>
+    <div class="active">2</div>
+    <div>3</div>
+    <div>4</div>
+</content>
+<content class="box3">
+    <button type="button">1</button>
+    <button type="button" class="active">2</button>
+    <button type="button">3</button>
+    <button type="button">4</button>
+    <button type="button">5</button>
+    <div>1</div>
+    <div class="active">2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+</content>
+
+<p id="control">
+    <button type="button">控制第一个轮播</button>
+    <button type="button">控制第一个停止</button>
+    <button type="button">控制第二个轮播</button>
+    <button type="button">控制第二个停止</button>
+    <button type="button">控制所有轮播开始</button>
+    <button type="button">控制所有轮播停止</button>
+    <button type="button">取反</button>
+</p>
+
+<script>
+    function Tap(box) {
+        this.btns=box.querySelectorAll("button");
+        this.divs=box.querySelectorAll("div");
+        this.nowNum=1;
+        this.timer=0;
+        this.auto=false;
+    }
+    Tap.prototype.init=function () {
+        var that=this;
+        this.btns.forEach((item,index)=>{
+            item.onclick=function () {
+                that.nowNum=index;
+                that.tapTo(that.nowNum)
+            }
+        })
+    }
+    Tap.prototype.tapTo=function () {
+        this.btns.forEach((item,index)=> {
+            item.classList.remove("active");
+            this.divs[index].classList.remove("active");
+        })
+        this.btns[this.nowNum].classList.add("active");
+        this.divs[this.nowNum].classList.add("active");
+    }
+    Tap.prototype.autoPlay=function () {
+        clearInterval(this.timer);
+        this.auto=true;
+        this.timer=setInterval(()=>{
+            if(!this.auto){
+                clearInterval(this.timer);
+            }else{
+                this.nowNum++;
+                this.nowNum%=this.btns.length;
+                this.tapTo();
+            }
+        },2500)
+    }
+
+    var box1=document.querySelector(".box1");
+    var t1=new Tap(box1);
+    t1.init();
+    t1.autoPlay();
+
+    var box2=document.querySelector(".box2");
+    var t2=new Tap(box2);
+    t2.init();
+
+    var box3=document.querySelector(".box3");
+    var t3=new Tap(box3);
+    t3.init();
+    t3.autoPlay()
+
+    var controls=document.querySelectorAll("p button");
+    controls[0].onclick=function () {
+        t1.autoPlay();
+    }
+    controls[1].onclick=function () {
+        t1.auto=false;
+    }
+    controls[2].onclick=function () {
+        t2.autoPlay();
+    }
+    controls[3].onclick=function () {
+        t2.auto=false;
+    }
+    controls[4].onclick=function () {
+        t1.autoPlay();
+        t2.autoPlay();
+        t3.autoPlay();
+    }
+    controls[5].onclick=function () {
+        t1.auto=false;
+        t2.auto=false;
+        t3.auto=false;
+    }
+    controls[6].onclick=function () {
+        if(t1.auto){t1.auto=false}else{t1.autoPlay()};
+        if(t2.auto){t2.auto=false}else{t2.autoPlay()};
+        if(t3.auto){t3.auto=false}else{t3.autoPlay()};
+    }
+</script>
+</body>
+</html>
