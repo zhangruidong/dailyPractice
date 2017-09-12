@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+<script>
+    function Fn1(){
+//	    	console.log( this );
+        this.arr = [1,2,3];
+        this.say = function(){
+            alert( 1 );
+        }
+    }
+    Fn1.prototype.run = function(){
+        console.log( "我会跑" );
+    }
+    function Fn2(){
+        //在Fn2函数中运行Fn1构造函数,修改Fn1中的this指向,指向Fn2中的this,如果不进行修改,那么这个this可能指向window
+        Fn1.call(this);
+    };
+
+    var f1 = new Fn1();
+    console.log( f1.arr );
+    //	    f1.say();
+    var f2 = new Fn2();
+    f2.arr.push( 4 );
+    console.log( f2.arr );
+    //		f2.say();
+    //		f2.run();
+    //借用构造函数的继承方式,只能继承构造函数上的属性和方法,不能继承父类原型身上的方法\属性
+
+    var f3 = new Fn2();
+    console.log( f3.arr );
+</script>
+</body>
+</html>

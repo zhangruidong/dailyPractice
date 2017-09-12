@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+    <script>
+        function Fn1 (name) {
+            this.name = name;
+            this.arr = [1,2,3];
+        }
+        Fn1.prototype.say = function(){
+            console.log( this.name + "我会说话" );
+        }
+
+        function Fn2 (name,money) {
+            Fn1.call(this,name);
+            this.money = money;
+        }
+        Fn2.prototype = new Fn1();
+        Fn2.prototype.constructor = Fn2;
+        //改写继承自 父类 的方法
+        Fn2.prototype.say = function(){
+            console.log( this.name +"会写代码" +"一天赚"+this.money+"美元");
+        }
+        //在继承父类之后,为子类添加方法
+        Fn2.prototype.coding = function(){
+            console.log( this.name +"我会写代码" );
+        }
+        Fn2.prototype.constructor = Fn2;
+
+
+        var f1 = new Fn1("leo");
+        f1.say();
+        //		    f1.coding();//报错
+
+        var f2 = new Fn2("momo",1500);
+        f2.arr.push(4);
+        f2.say();
+        f2.coding();
+
+        var f3 = new Fn2("zm",2000);
+        f3.say();
+        f3.coding();
+        //		    console.log( f3.arr );
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+    <script>
+        function clone(target,deep){
+            var res = target instanceof Array ? []:{};
+            for(var attr in target){
+                if( typeof target[attr] == "object" && deep && target[attr] !== null ){
+                    res[attr] = clone(target[attr],deep);
+                }else{
+                    //				console.log( target[attr] );
+                    res[attr] = target[attr];
+                }
+            }
+            return res;
+        }
+        function Fn(name){
+            this.name = name;
+        }
+        Fn.prototype.say = function(){
+            alert(1);
+        }
+
+        function Fn2 (name) {
+            Fn.call(this,name);
+        };
+        Fn2.prototype = clone( Fn.prototype,true );
+        Fn2.prototype.constructor = Fn2;
+        Fn2.prototype.run = function(){
+            alert("我会跑");
+        }
+        var f1 = new Fn("momo");
+        f1.say();
+        //		    f1.run();//报错
+
+        var f2 = new Fn2("leo");
+        f2.say();
+        f2.run();
+    </script>
+</body>
+</html>

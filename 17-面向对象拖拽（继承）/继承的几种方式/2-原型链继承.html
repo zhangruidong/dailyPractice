@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+<script>
+    function Person () {}
+    Person.prototype.say = function(){
+        console.log( "我会说话" );
+    }
+    function Coder(){}
+
+    Coder.prototype = new Person();
+    Coder.prototype.coding = function(){
+        console.log( "我会打代码" );
+    }
+
+    var c1 = new Coder();
+    c1.say();//正常输出,说明子类继承了父类的方法
+    c1.coding();//正常输出,说明子类的方法可以正常使用
+    //	    c1.say ->Coder.prototype.say == new Person().prototype.say(实例) -> Person.prototype.say
+    Coder.prototype.codeJs = function(){
+        console.log( "写JS" );
+    }
+    var c2 = new Coder();
+    console.log( 11111 );
+    c2.coding();
+    c2.codeJs();
+
+    var p1 = new Person();
+    p1.say();//正常,说明父类本身的方法可以调用
+    //	    p1.coding();//报错,说明子类添加的方法,没有加到父类上
+
+    /*
+    * 通过原型链继承：
+    *   兄弟类会互相影响
+    * */
+</script>
+</body>
+</html>
