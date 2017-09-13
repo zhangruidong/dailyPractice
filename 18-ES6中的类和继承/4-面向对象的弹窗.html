@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        /*.model-box {
+            box-sizing: border-box;
+            width:500px;
+            border:1px solid darkgreen;
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 0 10px;
+            position: fixed;
+            left: 200px;
+            top:100px;
+            padding: 8px;
+            z-index: 999;
+        }
+        .model-box .model-close {
+            position: absolute;
+            right: 14px;
+            top:6px;
+            font: 30px/30px "微软雅黑";
+            cursor: pointer;
+        }
+        .model-box .model-head {
+            font-weight: bolder;
+            text-align: center;
+            font: 24px/80px "";
+        }
+        .model-box .model-body {
+            min-height: 80px;
+            padding: 18px;
+            font: 18px/40px "";
+        }
+        .model-box .model-footer button {
+            float: right;
+            margin-right: 20px;
+            border:1px solid black;
+            border-radius: 4px;
+            outline: none;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+        .model-mask {
+            background-color: rgba(0,0,0,0.4);
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }*/
+    </style>
+</head>
+<body style="height: 3000px">
+    <button id="btn" type="button">点击弹窗</button>
+    <!--<div class="model-box">
+        <div class="model-close">&times;</div>
+        <div class="model-head">弹窗头部</div>
+        <div class="model-body">弹窗内容弹窗内容弹窗内容弹窗内容,弹窗内容弹窗内容弹窗内容弹窗内容弹窗内容弹窗内容弹窗内容 ？</div>
+        <div class="model-footer">
+            <button type="button">取消</button>
+            <button type="button">确定</button>
+        </div>
+    </div>
+    <div class="model-mask"></div>-->
+    <script>
+        class Drag{
+            constructor(el){
+                this.el=el;
+                this.disX=0;
+                this.disY=0;
+            }
+            init(){
+                this.el.onmousedown=this.downFn.bind(this);
+            }
+            downFn(e){
+                this.disX=e.clientX-this.el.offsetLeft;
+                this.disY=e.clientY-this.el.offsetTop;
+                document.onmousemove=this.moveFn.bind(this);
+                document.onmouseup=this.upFn.bind(this);
+                return false;
+            }
+            moveFn(e){
+                this.el.style.left=e.clientX-this.disX+"px";
+                this.el.style.top=e.clientY-this.disY+"px";
+            }
+            upFn(e){
+                document.onmousemove=document.onmouseup=null;
+            }
+        };
+        class LimDrag extends Drag{
+            constructor(el){
+                super(el);
+            }
+            moveFn(e){
+                let l=e.clientX-this.disX;
+                let t=e.clientY-this.disY;
+                if(l<0)l=0;
+                if(t<0)t=0;
+                if(l>window.innerWidth-this.el.offsetWidth)l=window.innerWidth-this.el.offsetWidth
+                if(t>window.innerHeight-this.el.offsetHeight)t=window.innerHeight-this.el.offsetHeight
+                this.el.style.left=l+"px";
+                this.el.style.top=t+"px";
+            }
+        }
+
+        class Model{
+            constructor(opt){
+                this.defaults = {//配置默认参数
+                    width:500,
+                    x:"center",
+                    y:"center",
+                    mask:0.8,
+                    title:"标题",
+                    content:"内容",
+                    drag:false,
+                    okFn:function(){console.log("确定")},
+                    cancelFn:function(){console.log("取消")}
+                };
+                this.opts=Object.assign({},this.defaults,opt);
+            }
+            init() {
+                this.model=this.createHtml();
+                this.mask=this.createMask();
+                this.style=this.createStyle();
+                this.addEvent();
+            };
+            createHtml() {
+                const model=document.createElement("div");
+                model.className="model-box";
+                model.innerHTML=`
+                        <div class="model-close">&times;</div>
+                        <div class="model-head">${this.opts.title}</div>
+                        <div class="model-body">${this.opts.content}</div>
+                        <div class="model-footer">
+                            <button class="model-concel" type="button">取消</button>
+                            <button class="model-confirm" type="button">确定</button>
+                        </div>
+                    `;
+                document.body.appendChild(model);
+                return model;
+            };
+            createMask(){ //创建遮罩
+                var div = document.createElement("div");
+                div.className = "model-mask";
+                document.body.appendChild(div);
+                return div;
+            };
+            createStyle() {
+                const style=document.createElement("style");
+                style.innerHTML+=`
+                    .model-box {
+                        box-sizing: border-box;
+                        width:${this.opts.width}px;
+                        border:1px solid darkgreen;
+                        background-color: #fff;
+                        border-radius: 6px;
+                        box-shadow: 0 0 10px;
+                        position: fixed;
+                        left: 200px;
+                        top:100px;
+                        padding: 8px;
+                        z-index: 999;
+                    }
+                    .model-box .model-close {
+                        position: absolute;
+                        right: 14px;
+                        top:6px;
+                        font: 30px/30px "微软雅黑";
+                        cursor: pointer;
+                    }
+                    .model-box .model-head {
+                        font-weight: bolder;
+                        text-align: center;
+                        font: 24px/80px "";
+                    }
+                    .model-box .model-body {
+                        min-height: 80px;
+                        padding: 18px;
+                        font: 18px/40px "";
+                    }
+                    .model-box .model-footer button {
+                        float: right;
+                        margin-right: 20px;
+                        border:1px solid black;
+                        border-radius: 4px;
+                        outline: none;
+                        padding: 4px;
+                        margin-bottom: 12px;
+                    }
+                    .model-mask {
+                        background-color: rgba(0,0,0,${this.opts.mask});
+                        position: fixed;
+                        left: 0;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                    }
+                  `;
+                document.head.appendChild(style);
+                this.model.style.width = this.opts.width+"px";
+                //设置x坐标
+                let x = 0;
+                switch ( this.opts.x ){
+                    case "left":
+                        x = 0;
+                        break;
+                    case "center":
+                        x = (window.innerWidth-this.model.offsetWidth)/2;
+                        break;
+                    case "right":
+                        x = window.innerWidth-this.model.offsetWidth;
+                        break;
+                    default:
+                        x = (window.innerWidth-this.model.offsetWidth)/2;
+                        break;
+                }
+
+                //设置y坐标
+                let y = 0;
+                switch ( this.opts.y ){
+                    case "top":
+                        y = 0;
+                        break;
+                    case "center":
+                        y = (window.innerHeight-this.model.offsetHeight)/2;
+                        break;
+                    case "bottom":
+                        y = window.innerHeight-this.model.offsetHeight;
+                        break;
+                    default:
+                        y = (window.innerHeight-this.model.offsetHeight)/2;
+                        break;
+                }
+
+                this.model.style.left = x+"px";
+                this.model.style.top = y+"px";
+                return style;
+            };
+            addEvent(){
+                const confirm=this.model.querySelector(".model-confirm");
+                const concel=this.model.querySelector(".model-concel");
+                const close=this.model.querySelector(".model-close");
+                confirm.onclick=()=>{
+                    this.mask.remove();
+                    this.model.remove();
+                    this.style.remove();
+                    this.opts.okFn();
+                };
+                concel.onclick=()=>{
+                    this.mask.remove();
+                    this.model.remove();
+                    this.style.remove();
+                    this.opts.cancelFn();
+                };
+                close.onclick=()=>{
+                    this.mask.remove();
+                    this.model.remove();
+                    this.style.remove();
+                };
+                if(this.opts.drag){
+                    const drag=new LimDrag(this.model);
+                    drag.init();
+                }
+            }
+        }
+
+        const btn=document.querySelector("#btn");
+        btn.onclick=function () {
+            const m= new Model({
+                title:"今天放假",
+                content:"逗你的~~~O(∩_∩)O哈哈哈~",
+                mask:false,
+                x:"center",
+                y:"center",
+                mask:0.6,
+                drag:true
+            });
+            m.init();
+        }
+    </script>
+</body>
+</html>

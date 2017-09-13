@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        #box,#box2 {
+            position: absolute;
+            left: 0;
+            top:0;
+            width:100px;
+            height:100px;
+            background-color: red;
+        }
+        #box2 {
+            top:200px;
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <div id="box2"></div>
+    <script>
+        class Drag{
+            constructor(el){
+                this.el=el;
+                this.disX=0;
+                this.disY=0;
+            }
+            init(){
+                this.el.onmousedown=this.downFn.bind(this);
+            }
+            downFn(e){
+                this.disX=e.clientX-this.el.offsetLeft;
+                this.disY=e.clientY-this.el.offsetTop;
+                document.onmousemove=this.moveFn.bind(this);
+                document.onmouseup=this.upFn.bind(this);
+                return false;
+            }
+            moveFn(e){
+                this.el.style.left=e.clientX-this.disX+"px";
+                this.el.style.top=e.clientY-this.disY+"px";
+            }
+            upFn(e){
+                document.onmousemove=document.onmouseup=null;
+            }
+        };
+        class LimDrag extends Drag{
+            constructor(el){
+                super(el);
+            }
+            moveFn(e){
+                let l=e.clientX-this.disX;
+                let t=e.clientY-this.disY;
+                if(l<0)l=0;
+                if(t<0)t=0;
+                if(l>window.innerWidth-this.el.offsetWidth)l=window.innerWidth-this.el.offsetWidth
+                if(t>window.innerHeight-this.el.offsetHeight)t=window.innerHeight-this.el.offsetHeight
+                this.el.style.left=l+"px";
+                this.el.style.top=t+"px";
+            }
+        }
+
+
+
+
+        const box=document.querySelector("#box");
+        const box2=document.querySelector("#box2");
+        const d= new Drag(box);
+        d.init();
+        const l=new LimDrag(box2);
+        l.init();
+    </script>
+</body>
+</html>

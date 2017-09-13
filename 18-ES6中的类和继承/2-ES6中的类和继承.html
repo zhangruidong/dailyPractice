@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+    <script>
+        class Person{
+            constructor(name){
+                this.name=name;
+            }
+            say(){
+                console.log(this.name);
+            }
+        }
+
+        class Coder extends Person{
+            constructor(name,skill){
+                super(name);
+                this.skill=skill;
+            }
+            say(){
+                console.log("hello,"+this.name);
+            }
+            can(){
+                console.log("我是"+this.name+",我会"+this.skill);
+            }
+        }
+
+
+        const p=new Person("zrd");
+        p.say();
+        const c=new Coder("coder","vue");
+        c.say();
+        c.can();
+    </script>
+</body>
+</html>
