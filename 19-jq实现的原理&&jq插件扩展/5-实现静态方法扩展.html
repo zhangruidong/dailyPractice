@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+    <ul class="list">
+        <li>111</li>
+        <li>222</li>
+        <li>333</li>
+        <li>444</li>
+    </ul>
+    <script src="js/zQuery-05.js"></script>
+    <!--<script src="js/jQuery.js"></script>-->
+    <!--
+        实现了同jquery的选择器
+            参数可以是  css3选择器 ||  元素组成的数组
+
+        实现了同jQuery的css方法、each方法、实现了css的链式操作
+
+        实现了同jQuery的find方法
+
+        实现了同jQuery的end方法    优化了选择器
+
+        实现了jQuery的静态方法扩展
+
+    -->
+
+    <script>
+//        console.log($(".list").find("li").css("background","red"));
+        $(".list").find("li").css("background","red").end().css("border","2px solid blue");
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+    <ul class="list">
+        <li>111</li>
+        <li>222</li>
+        <li>333</li>
+        <li>444</li>
+    </ul>
+    <script src="js/zQuery-01.js"></script>
+    <!--<script src="js/jQuery.js"></script>-->
+    <!--
+        实现了同jquery的选择器
+            参数可以是  css3选择器 ||  元素组成的数组
+    -->
+
+    <script>
+        console.log($(".list li"));
+        const lis=Array.from(document.querySelectorAll(".list li"));
+        console.log(Array.isArray(document.querySelectorAll(".list li")));  //通过css3选择器选择到的 不是数组
+        console.log($(lis));
+    </script>
+</body>
+</html>
