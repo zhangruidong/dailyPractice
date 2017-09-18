@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+    <style>
+        .box {
+            position: absolute;
+            left:0;
+            top:0;
+            width:100px;
+            height:100px;
+            background-color: red;
+        }
+        .box2 {
+            left:200px;
+            background-color: blue;
+        }
+        .box3 {
+            top:200px;
+            background-color: green;
+        }
+        .box4 {
+            left:200px;
+            top:300px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="box box1"></div>
+    <div class="box box2"></div>
+    <div class="box box3"></div>
+    <div class="box box4"></div>
+
+    <script src="jQuery.js"></script>
+    <script src="jQueryDrag.js"></script>
+    <script >
+        /*
+        * 静态方法：构造函数方法，类方法
+        * 动态方法：对象方法，原型方法
+        * */
+        $(".box").drag();
+    </script>
+</body>
+</html>
