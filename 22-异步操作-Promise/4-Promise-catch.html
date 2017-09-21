@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+<script>
+    arrSrc=[
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505975892692&di=e7dad3565c8bbf0ef34bc43e9555719e&imgtype=0&src=http%3A%2F%2Fimg2.web07.cn%2FUpPic%2FPng%2F201410%2F14%2F2781031414050498.png",
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505975892692&di=123ba51d32caff5b111d94332d73a24f&imgtype=0&src=http%3A%2F%2Fstatic.zuidaima.com%2Fimages%2F77001%2F201512%2F20151216094200865_650x282.jpg",
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1505976180049&di=1e4afcc4875fe81f7139ba305d46cf73&imgtype=jpg&src=http%3A%2F%2Fimg2.imgtn.bdimg.com%2Fit%2Fu%3D3103704260%2C2306261531%26fm%3D214%26gp%3D0.jpg"
+    ];
+    function loadImg(name,url) {
+        return new Promise(function (resolve,reject) {
+            let img= new Image();
+            img.src=url;
+            img.onload= function () {
+                resolve(name);
+            };
+            img.onerror= function () {
+                reject(name);
+            }
+        })
+    }
+    /*第一种
+    *   只捕获当前异步的错误
+    * */
+
+    loadImg("第一张",arrSrc[0]).then(function (info) {
+        console.log(info+"加载完成");
+    },function (info) {
+        console.log(info+"加载失败");
+    });
+
+    /*第二种
+    *   能捕获所有链式上的错误
+    * */
+    loadImg("第二张",arrSrc[1]).then(function (info) {
+        console.log(info+"加载完成");
+    }).catch(function (info) {
+        console.log(info+"加载失败");
+    })
+
+</script>
+</body>
+</html>
