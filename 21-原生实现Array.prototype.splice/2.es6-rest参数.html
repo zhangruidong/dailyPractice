@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>zzzrd</title>
+</head>
+<body>
+<script>
+    let arr=["z","r","d","hello","world"];
+    
+    console.log(arrSplice(arr,1,2,"rui","dong"));
+    console.log(arrSplice(arr,1,2));
+    console.log(arrSplice(arr,1));
+
+    function arrSplice(arr=[],start=0,count=(arr.length-start),...addArr) {
+        var newArr=[];
+        for(let i=0;i<arr.length;i++){
+
+        }
+        arr.forEach((item,index) => {
+            if(index<start){
+                newArr[newArr.length]=item;
+            }else{
+                if(index>=(start+count)){
+                    newArr[newArr.length]=item;
+                }else{
+                    if(addArr.length){
+                        newArr[newArr.length]=addArr[0];
+                        addArr.shift();
+                    }
+                }
+            }
+        });
+        return newArr;
+    }
+    
+</script>
+</body>
+</html>
