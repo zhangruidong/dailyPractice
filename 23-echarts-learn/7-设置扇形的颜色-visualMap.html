@@ -17,6 +17,14 @@
         let myChart = echarts.init(document.getElementById("main"));
         myChart.setOption({
             backgroundColor: '#2c343c',
+            visualMap: {
+              show: false,
+              min: 80,
+              max: 600,
+              inRange: {
+                  colorLightness: [0,1]
+              }
+            },
             series : [
                 {
                     name: '访问来源',
@@ -25,21 +33,11 @@
                     data:[
                         {
                             value:235,
-                            name:'视频广告',
-                            itemStyle: {
-                                normal: {
-                                    color: '#23531'
-                                }
-                            }
+                            name:'视频广告'
                         },
                         {
                             value:274,
-                            name:'联盟广告',
-                            itemStyle: {
-                                normal: {
-                                    color: 'green'
-                                }
-                            }
+                            name:'联盟广告'
                         },
                         {
                             value:310,
